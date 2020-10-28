@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.brown.speechtocode.commands.category"
+            name="Sample Category">
+      </category>
+      <command
+            categoryId="org.brown.speechtocode.commands.category"
+            name="Hello World"
+            id="org.brown.speechtocode.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.brown.speechtocode.handlers.SampleHandler"
+            commandId="org.brown.speechtocode.commands.sampleCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.brown.speechtocode.commands.sampleCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="org.brown.speechtocode.menus.sampleMenu"
+               label="Sample Menu"
+               mnemonic="M">
+            <command
+                  commandId="org.brown.speechtocode.commands.sampleCommand"
+                  id="org.brown.speechtocode.menus.sampleCommand"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="org.brown.speechtocode.toolbars.sampleToolbar">
+            <command
+                  id="org.brown.speechtocode.toolbars.sampleCommand"
+                  commandId="org.brown.speechtocode.commands.sampleCommand"
+                  icon="icons/sample.png"
+                  tooltip="Say hello world">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.brown.speechtocode.helloworldcategory"
+            name="Hello World!">
+      </category>
+      <view
+            category="org.brown.speechtocode.helloworldcategory"
+            class="org.brown.speechtocode.SampleView"
+            id="org.brown.speechtocode.helloworldview"
+            name="Hello World!"
+            restorable="true">
+      </view>
+   </extension> <extension
+         id="id1"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+            <run
+            	class="org.brown.speechtocode.
+      </application>
+   </extension>
+
+</plugin>
