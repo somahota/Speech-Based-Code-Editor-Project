@@ -40,6 +40,7 @@ public class Voice2Text implements Runnable{
 	
 	        	public void onResponse(StreamingRecognizeResponse response) {
 	        		System.out.println("Transcript: " + response.getResults(0).getAlternatives(0).getTranscript());
+	        		System.out.println("Transcript: " + response.getResults(0).getAlternatives(0).getConfidence());
 	        		System.out.println("Final: " + response.getResults(0).getIsFinal());
 			      
 	        		//TODO call Text2Code here to send response
@@ -91,13 +92,14 @@ public class Voice2Text implements Runnable{
                 RecognitionConfig.newBuilder()
                     .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
                     .setLanguageCode("en-US")
-                    .setModel("default")
+                    .setModel("command_and_search")
                     .setSampleRateHertz(16000)
                     .build();
         
         StreamingRecognitionConfig streamingRecognitionConfig =
             StreamingRecognitionConfig.newBuilder()
             	.setConfig(recognitionConfig)
+            	.setInterimResults(true)
             	.build();
 
         // send config to server
@@ -133,5 +135,6 @@ public class Voice2Text implements Runnable{
         
         // close clientStream
         clientStream.closeSend();
+        targetDataLine.close();
 	}
 }
