@@ -15,18 +15,15 @@ import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.LineUnavailableException;
 
 import com.google.api.gax.rpc.ClientStream;
-import com.google.api.gax.rpc.ResponseObserver;
-import com.google.api.gax.rpc.StreamController;
 import com.google.cloud.speech.v1.RecognitionConfig;
 import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.StreamingRecognitionConfig;
 import com.google.cloud.speech.v1.StreamingRecognizeRequest;
-import com.google.cloud.speech.v1.StreamingRecognizeResponse;
 import com.google.protobuf.ByteString;
 
 public class Voice2Text implements Runnable{
 	private SpeechClient client;
-	private ResponseObserver<StreamingRecognizeResponse> responseObserver;
+	private ResponseObserverClass responseObserver;
 	private ClientStream<StreamingRecognizeRequest> clientStream;
 	private AudioFormat audioFormat;
 	private TargetDataLine targetDataLine;
@@ -36,23 +33,7 @@ public class Voice2Text implements Runnable{
 	
 	public Voice2Text() throws Exception{
 		client = SpeechClient.create();
-        responseObserver =
-        	new ResponseObserver<StreamingRecognizeResponse>() {
-	        	public void onStart(StreamController controller) {}
-	
-	        	public void onResponse(StreamingRecognizeResponse response) {
-	        		System.out.println("Transcript: " + response.getResults(0).getAlternatives(0).getTranscript());
-	        		System.out.println("Transcript: " + response.getResults(0).getAlternatives(0).getConfidence());
-	        		System.out.println("Final: " + response.getResults(0).getIsFinal());
-			      
-	        		//TODO call Text2Code here to send response
-	        	}
-	        	public void onComplete() {}
-	
-	        	public void onError(Throwable t) {
-	        		System.out.println(t);
-	        	}
-	        };
+        responseObserver = new ResponseObserverClass();
 
         // SampleRate:16000Hz, SampleSizeInBits: 16, Number of channels: 1, Signed: true,
         // bigEndian: false
