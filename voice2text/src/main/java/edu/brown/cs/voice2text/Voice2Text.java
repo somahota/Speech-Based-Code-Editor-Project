@@ -1,7 +1,9 @@
 package edu.brown.cs.voice2text;
 
+import static edu.brown.cs.voice2text.AudioFormatConfiguration.*;
+import static edu.brown.cs.voice2text.RecognitionConfiguration.*;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.sound.sampled.AudioFormat;
@@ -55,7 +57,7 @@ public class Voice2Text implements Runnable{
         // SampleRate:16000Hz, SampleSizeInBits: 16, Number of channels: 1, Signed: true,
         // bigEndian: false
         // TODO some examples set bigEndian as true on Mac. strange
-        audioFormat = new AudioFormat(16000, 16, 1, true, false);
+        audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, numberOfChannels, signed, bigEndian);
         DataLine.Info targetInfo =
             new Info(
                 TargetDataLine.class,
@@ -90,16 +92,16 @@ public class Voice2Text implements Runnable{
         
         RecognitionConfig recognitionConfig =
                 RecognitionConfig.newBuilder()
-                    .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
-                    .setLanguageCode("en-US")
-                    .setModel("command_and_search")
-                    .setSampleRateHertz(16000)
+                    .setEncoding(encoding)
+                    .setLanguageCode(languageCode)
+                    .setModel(model)
+                    .setSampleRateHertz(sampleRateHertz)
                     .build();
         
         StreamingRecognitionConfig streamingRecognitionConfig =
             StreamingRecognitionConfig.newBuilder()
             	.setConfig(recognitionConfig)
-            	.setInterimResults(true)
+            	.setInterimResults(interimResults)
             	.build();
 
         // send config to server
