@@ -1,31 +1,24 @@
 package edu.brown.cs.voice2text;
 
-import static edu.brown.cs.voice2text.RecognitionConfiguration.*;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.sound.sampled.AudioInputStream;
-
-import com.google.api.gax.rpc.ClientStream;
-import com.google.cloud.speech.v1.RecognitionConfig;
-import com.google.cloud.speech.v1.SpeechClient;
-import com.google.cloud.speech.v1.StreamingRecognitionConfig;
 import com.google.cloud.speech.v1.StreamingRecognizeRequest;
-import com.google.protobuf.ByteString;
 
 public class Voice2Text implements Runnable{
-	private SpeechClient client;
+	private StreamingRecognition streamingRecognition;
+	private StreamingRecognizeRequest request;
 	private ResponseObserverClass responseObserver;
-	private ClientStream<StreamingRecognizeRequest> clientStream;
 	private AudioInputStream audio;
 	private Thread thread;
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	private Microphone microphone;
 	
 	public Voice2Text() throws Exception{
-		client = SpeechClient.create();
         responseObserver = new ResponseObserverClass();
+		streamingRecognition = new StreamingRecognition(responseObserver);
 
         microphone = new Microphone();
         
@@ -46,30 +39,9 @@ public class Voice2Text implements Runnable{
 	public void run() {
 		running.set(true);
 		
-		// start/restart clientStream
-        clientStream =
-                client.streamingRecognizeCallable().splitCall(responseObserver);
-        
-        RecognitionConfig recognitionConfig =
-                RecognitionConfig.newBuilder()
-                    .setEncoding(encoding)
-                    .setLanguageCode(languageCode)
-                    .setModel(model)
-                    .setSampleRateHertz(sampleRateHertz)
-                    .build();
-        
-        StreamingRecognitionConfig streamingRecognitionConfig =
-            StreamingRecognitionConfig.newBuilder()
-            	.setConfig(recognitionConfig)
-            	.setInterimResults(interimResults)
-            	.build();
+        request = streamingRecognition.setStreamingConfig();
 
-        // send config to server
-        StreamingRecognizeRequest request =
-            StreamingRecognizeRequest.newBuilder()
-                .setStreamingConfig(streamingRecognitionConfig)
-                .build();
-        clientStream.send(request);
+        streamingRecognition.sendRequest(request);
 		
         microphone.open();
         microphone.start();
@@ -81,18 +53,15 @@ public class Voice2Text implements Runnable{
             byte[] data = new byte[6400];
             try {
 				audio.read(data);
-                request =
-                        StreamingRecognizeRequest.newBuilder()
-                            .setAudioContent(ByteString.copyFrom(data))
-                            .build();
-                clientStream.send(request);
+                request = streamingRecognition.setAudioContent(data);
+                streamingRecognition.sendRequest(request);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
         }
         
         // close clientStream
-        clientStream.closeSend();
+        streamingRecognition.closeSend();
         microphone.close();
 	}
 }
