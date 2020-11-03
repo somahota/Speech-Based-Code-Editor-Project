@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Button
+Bundle-SymbolicName: Button;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.apache.httpcomponents.httpclient;bundle-version="4.5.10",
+ org.apache.httpcomponents.httpclient.win;bundle-version="4.5.10",
+ org.apache.commons.codec;bundle-version="1.14.0"
+Automatic-Module-Name: Button
+Bundle-RequiredExecutionEnvironment: JavaSE-14
