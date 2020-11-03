@@ -9,10 +9,8 @@ import com.google.cloud.speech.v1.StreamingRecognizeRequest;
 
 public class Voice2Text implements Runnable{
 	private StreamingRecognition streamingRecognition;
-	private StreamingRecognizeRequest request;
 	private ResponseObserverClass responseObserver;
 	private AudioInputStream audio;
-	private Thread thread;
 	private final AtomicBoolean running = new AtomicBoolean(false);
 	private Microphone microphone;
 	
@@ -27,8 +25,6 @@ public class Voice2Text implements Runnable{
 	
 	public void start() {
 		System.out.println("V2T Start");
-		thread = new Thread(this);
-		thread.start();
 	}
 	public void stop() {
 		System.out.println("V2T Stop");
@@ -39,7 +35,7 @@ public class Voice2Text implements Runnable{
 	public void run() {
 		running.set(true);
 		
-        request = streamingRecognition.setStreamingConfig();
+		StreamingRecognizeRequest request = streamingRecognition.setStreamingConfig();
 
         streamingRecognition.sendRequest(request);
 		
@@ -53,7 +49,7 @@ public class Voice2Text implements Runnable{
             byte[] data = new byte[6400];
             try {
 				audio.read(data);
-                request = streamingRecognition.setAudioContent(data);
+				request = streamingRecognition.setAudioContent(data);
                 streamingRecognition.sendRequest(request);
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -11,7 +11,7 @@ public final class RecognitionConfiguration {
 
     public static final AudioEncoding encoding = RecognitionConfig.AudioEncoding.LINEAR16;
     public static final String languageCode = "en-US";
-    public static final String model = "command_and_search";
+    public static final String model = "default";
     public static final int sampleRateHertz = 16000;
     
     // Streaming Recognition Configuration
