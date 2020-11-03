@@ -15,6 +15,5 @@ public final class RecognitionConfiguration {
     public static final int sampleRateHertz = 16000;
     
     // Streaming Recognition Configuration
-    public static final boolean interimResults = true;
-    
+    public static final boolean interimResults = false;
 }

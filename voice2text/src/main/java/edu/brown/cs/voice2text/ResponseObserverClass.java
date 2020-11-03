@@ -18,7 +18,7 @@ public class ResponseObserverClass implements ResponseObserver<StreamingRecogniz
 	public void onResponse(StreamingRecognizeResponse response) {
 		// TODO Auto-generated method stub
 		System.out.println("Transcript: " + ((StreamingRecognizeResponse) response).getResults(0).getAlternatives(0).getTranscript());
-		System.out.println("Transcript: " + ((StreamingRecognizeResponse) response).getResults(0).getAlternatives(0).getConfidence());
+		System.out.println("Confidence: " + ((StreamingRecognizeResponse) response).getResults(0).getAlternatives(0).getConfidence());
 		System.out.println("Final: " + ((StreamingRecognizeResponse) response).getResults(0).getIsFinal());
 		
 	}
