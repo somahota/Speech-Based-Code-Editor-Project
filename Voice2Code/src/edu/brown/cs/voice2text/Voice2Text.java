@@ -1,6 +1,5 @@
 package edu.brown.cs.voice2text;
 
-
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 

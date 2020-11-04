@@ -22,6 +22,7 @@ public class Voice2Code {
 	@PostConstruct
 	public void createPartControl(Composite parent) throws Exception {
 		System.out.println("Enter in Button postConstruct");
+		v2t = new Voice2Text();
 		
 		parent.setLayout(new FillLayout());
 		
@@ -32,7 +33,6 @@ public class Voice2Code {
 	    button.setImage(new Image(Display.getCurrent(), imageData));
 	    
 	    setButton2Start();
-		v2t = new Voice2Text();
 	    button.addListener(SWT.Selection, new Listener() {
 	        public void handleEvent(Event e) {
 	          switch (e.type) {
