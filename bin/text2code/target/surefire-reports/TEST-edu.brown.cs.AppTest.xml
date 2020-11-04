@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="edu.brown.cs.AppTest" time="0.035" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="edu.brown.cs.AppTest" time="0.03" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
     <property name="java.specification.version" value="12"/>
@@ -13,7 +13,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/surefire/surefirebooter4787344927536297844.jar /Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/surefire 2020-11-04T16-09-18_044-jvmRun1 surefire8940325563371399944tmp surefire_011029126796811103368tmp"/>
+    <property name="sun.java.command" value="/Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/surefire/surefirebooter10942361837066131172.jar /Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/surefire 2020-10-28T00-04-27_574-jvmRun1 surefire15075637577288389361tmp surefire_010895532887906604319tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/test-classes:/Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/classes:/Users/eiseleappes/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/eiseleappes/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
@@ -30,7 +30,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/surefire/surefirebooter4787344927536297844.jar"/>
+    <property name="surefire.real.class.path" value="/Users/eiseleappes/Speech-Based-Code-Editor-Project/text2code/target/surefire/surefirebooter10942361837066131172.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="12.0.2+10"/>
@@ -55,5 +55,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="56.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="edu.brown.cs.AppTest" time="0.002"/>
+  <testcase name="shouldAnswerWithTrue" classname="edu.brown.cs.AppTest" time="0.001"/>
 </testsuite>

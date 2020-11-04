@@ -1,31 +1,26 @@
+package edu.brown.cs;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TextToCommands {
-	
-	
-	// Stores the words the user has said, oldest at front of list
-	List<String> words;
-	
-	// Store key words elsewhere
+
+
+	// Store key words
 	Map<String, String> keywords = new HashMap<String, String>();
-	
-	// int waitTime = ?;    
-	// If words has first part of a command/keyword, how long wait until 
-	// ex: words = (declare)
-	
-	
-	// Note, probably want a mode where all words are joined capital
-	// ex: "ArrayList", "String"
-	
-	
+	Set<String> commands = new HashSet<String>();
+	int maxCommandLength;
+
+
 	public TextToCommands() {
-		words = new ArrayList<String>();
 		initializeKeyWords();
+		initializeCommands();
 	}
-	
+
 	/**
 	 * Initializes key words to look for.
 	 * If detected, these words will be translated into their
@@ -46,49 +41,129 @@ public class TextToCommands {
 		keywords.put("quote", "'");
 		keywords.put("double", "\"");
 		keywords.put("comment", "//");
-		keywords.put("?", "<");
-		keywords.put("?", ">");
-		
+		keywords.put("less than ", "<");
+		keywords.put("greater than", ">");
 	}
-	
-	public void addWord(String w) {
-		words.add(w);
+
+  /**
+	  Initialize a list of commands
+		(can be updated/changed later)
+	*/
+	private void initializeCommands() {
+		// TODO: add more, just testing with a few for now
+		commands.add("up");
+		commands.add("down");
+		commands.add("next line");
+
+		int maxLength = -1;
+		for (String s : commands) {
+			int size = s.split(" ").length;
+			if (size > maxLength) {
+				maxLength = size;
+			}
+		}
+		this.maxCommandLength = maxLength;
 	}
-	
-	// TODO: might want something that makes all capitol
-	// ex: MAX_SIZE
-	
+
+
 	/**
-	 * 
-	 * @param s, in the form "this, is, a, var"
-	 * @return	the input list as a var name, ex: "thisIsAVar"
+	 *
+	 * @param s, in the form "this", "is", "a", "var"
+	 * @return	the input list in form "thisIsAVar"
 	 */
-	private String getVariableString(List<String> s) {
+	public String getVariableString(List<String> s) {
 		if (s.size() == 0) {
 			return "";
 		}
-		
+
 		String result = "";
-		
+
 		result = result.concat(s.get(0).toLowerCase());
 		for (int i = 1; i < s.size(); i++) {
 			String current = s.get(i).toLowerCase();
 			current  = current.substring(0, 1).toUpperCase() + current.substring(1, current.length());
 			result = result.concat(current);
 		}
-		
+
 		return result;
 	}
-	
-	// TODO: What to do about close matches? misinterpretations?
-	
-	// Process the current words into commands
-	// TODO: When to call  this?
-	private void process() {
-		// TODO: upper/lower casing
-		
+
+
+	/**
+	 * @param s, in the form "this", "is", "a", "var"
+	 * @return the  input list in the form "THIS_IS_A_VAR"
+	 */
+	public String getAllCapsString(List<String> s) {
+
+		String result = "";
+		for (int i = 0; i < s.size(); i++) {
+			result = result.concat(s.get(i).toUpperCase());
+			if (i != s.size() - 1) {
+				result = result.concat("_");
+			}
+		}
+		return result;
+	}
+
+
+	/**
+	* @param s: input list in form "this", "is", "a", "var"
+	* @return: the input in the form "ThisIsAVar"
+	*/
+	public String getNormalCase(List<String> s) {
+		String result = "";
+		for (int i = 0; i < s.size(); i++) {
+			String current = s.get(i).toLowerCase();
+			current  = current.substring(0, 1).toUpperCase() + current.substring(1, current.length());
+			result = result.concat(current);
+		}
+
+		return result;
+	}
+
+  /**
+	 Checks if the beginning of s matches to a command,
+	 if there is a match, returns a list of the strings in this command
+	 if not, null
+	*/
+	public List<String> matchCommand(List<String> s) {
+		for (int i = 1; i <= this.maxCommandLength; i++) {
+			List<String> current = new ArrayList<String>();
+			String currString = "";
+			int upperBound = Integer.min(i, s.size());
+			for (int j = 0; j < i; j++) {
+				current.add(s.get(j));
+				currString += s.get(j);
+				if (j != i - 1) {
+					currString += " ";
+				}
+			}
+			System.out.println("||||||||||||" + currString);
+			// Check for match
+			if (this.commands.contains(currString)) {
+				return current;
+			}
+		}
+		return null; // no match
+	}
+
+
+  // Very simple processor, just writes all the words to the screen
+	// no commands
+	public void simpleProcess(List<String> words) {
 		for (int i = 0; i < words.size(); i++) {
-			
+			// TODO: Plugin.writeout(words.get(i))
+			System.out.println(words.get(i));
+		}
+	}
+
+
+	// Process the current words into commands
+	// Called at end of sentence
+	private void process(List<String> words) {
+
+		for (int i = 0; i < words.size(); i++) {
+
 			String command = "placeholder'";
 			switch (command) {
 				case "up" :
@@ -126,14 +201,14 @@ public class TextToCommands {
 						// writeOut(keywords.get(command))
 					} else {
 						// Just write out the word as is if nothing after
-						// writeOut(command) 
+						// writeOut(command)
 					}
 			}
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 
 }
