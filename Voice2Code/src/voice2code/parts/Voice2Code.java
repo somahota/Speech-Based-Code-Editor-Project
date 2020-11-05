@@ -1,6 +1,12 @@
 package voice2code.parts;
 
+import java.net.URL;
+
 import javax.annotation.PostConstruct;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -11,6 +17,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import edu.brown.cs.voice2text.Voice2Text;
 
@@ -20,6 +28,19 @@ public class Voice2Code {
 	private Voice2Text v2t;
 	private InsertHandler ih;
 
+	public Image getMicrophoneImage(String path) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		final URL fullPathString = FileLocator.find(bundle, new Path(path), null);
+
+		ImageDescriptor imageDesc = ImageDescriptor.createFromURL(fullPathString);
+
+		Image image = imageDesc.createImage();
+		ImageData imageData = image.getImageData();
+		imageData.scaledTo(100, 100);
+		
+		return new Image(Display.getCurrent(), imageData);
+	}
+	
 	@PostConstruct
 	public void createPartControl(Composite parent) throws Exception {
 		ih = new InsertHandler();
@@ -32,9 +53,7 @@ public class Voice2Code {
 		
 	    button = new Button(parent, SWT.PUSH);
 	    
-	    ImageData imageData = new ImageData("/home/jeremy/Documents/Brown/2020Fall/CS1951U/project/Speech-Based-Code-Editor-Project/Voice2Code/icons/microphone.png");
-	    imageData = imageData.scaledTo(100, 100);
-	    button.setImage(new Image(Display.getCurrent(), imageData));
+	    button.setImage(getMicrophoneImage("icons/microphone.png"));
 	    
 	    setButton2Start();
 	    button.addListener(SWT.Selection, new Listener() {
@@ -44,13 +63,11 @@ public class Voice2Code {
 	            if (started) {
 	            	setButton2Start();
 	            	
-	            	ih.insertText("hello world!", 0);
 	            	v2t.stop();
 	            }
 	            else {
 	            	setButton2Stop();
 	            	
-	            	ih.insertText("goodbye world!", 0);
 	            	v2t.start();
 	            }
 	            break;

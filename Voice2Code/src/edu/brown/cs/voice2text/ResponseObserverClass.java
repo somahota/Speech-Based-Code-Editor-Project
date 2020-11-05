@@ -30,7 +30,7 @@ public class ResponseObserverClass implements ResponseObserver<StreamingRecogniz
 		System.out.println("Transcript: " + transcript);
 		System.out.println("Confidence: " + ((StreamingRecognizeResponse) response).getResults(0).getAlternatives(0).getConfidence());
 		System.out.println("Final: " + ((StreamingRecognizeResponse) response).getResults(0).getIsFinal());
-		
+		insertHandler.insertText(transcript);
 	}
 
 
