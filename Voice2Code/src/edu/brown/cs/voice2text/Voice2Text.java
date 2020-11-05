@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.sound.sampled.AudioInputStream;
 import com.google.cloud.speech.v1p1beta1.StreamingRecognizeRequest;
 
+import voice2code.parts.InsertHandler;
+
 public class Voice2Text implements Runnable{
 	private StreamingRecognition streamingRecognition;
 	private ResponseObserverClass responseObserver;
@@ -14,9 +16,15 @@ public class Voice2Text implements Runnable{
 	private Microphone microphone;
 	
 	public Voice2Text() throws Exception{
-
 		streamingRecognition = new StreamingRecognition(responseObserver);
         responseObserver = new ResponseObserverClass();
+        microphone = new Microphone();
+        microphone.checkMicrophone();
+	}
+	
+	public Voice2Text(InsertHandler ih) throws Exception{
+		streamingRecognition = new StreamingRecognition(responseObserver);
+        responseObserver = new ResponseObserverClass(ih);
         microphone = new Microphone();
         microphone.checkMicrophone();
 	}

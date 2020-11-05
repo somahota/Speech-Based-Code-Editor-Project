@@ -18,17 +18,21 @@ public class Voice2Code {
 	private Button button;
 	private boolean started;
 	private Voice2Text v2t;
+	private InsertHandler ih;
 
 	@PostConstruct
 	public void createPartControl(Composite parent) throws Exception {
+		ih = new InsertHandler();
+		
+		
 		System.out.println("Enter in Button postConstruct");
-		v2t = new Voice2Text();
+		v2t = new Voice2Text(ih);
 		
 		parent.setLayout(new FillLayout());
 		
 	    button = new Button(parent, SWT.PUSH);
 	    
-	    ImageData imageData = new ImageData("/Users/rashidhar/Documents/Speech-Based-Code-Editor-Project/Voice2Code/icons/microphone.png");
+	    ImageData imageData = new ImageData("/home/jeremy/Documents/Brown/2020Fall/CS1951U/project/Speech-Based-Code-Editor-Project/Voice2Code/icons/microphone.png");
 	    imageData = imageData.scaledTo(100, 100);
 	    button.setImage(new Image(Display.getCurrent(), imageData));
 	    
@@ -39,10 +43,14 @@ public class Voice2Code {
 	          case SWT.Selection:
 	            if (started) {
 	            	setButton2Start();
+	            	
+	            	ih.insertText("hello world!", 0);
 	            	v2t.stop();
 	            }
 	            else {
 	            	setButton2Stop();
+	            	
+	            	ih.insertText("goodbye world!", 0);
 	            	v2t.start();
 	            }
 	            break;
