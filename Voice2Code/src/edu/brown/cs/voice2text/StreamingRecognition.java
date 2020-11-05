@@ -8,7 +8,6 @@ import com.google.cloud.speech.v1p1beta1.RecognitionConfig;
 import com.google.cloud.speech.v1p1beta1.SpeechClient;
 import com.google.cloud.speech.v1p1beta1.StreamingRecognitionConfig;
 import com.google.cloud.speech.v1p1beta1.StreamingRecognizeRequest;
-import com.google.cloud.speech.v1p1beta1.StreamingRecognizeRequest.Builder;
 import com.google.protobuf.ByteString;
 
 public class StreamingRecognition {
@@ -16,13 +15,20 @@ public class StreamingRecognition {
 	private ClientStream<StreamingRecognizeRequest> clientStream;
 	private RecognitionConfig recognitionConfig;
 	private StreamingRecognitionConfig streamingRecognitionConfig;
-	private Builder request;
 
 	public StreamingRecognition(ResponseObserverClass responseObserver) throws Exception {
 		client = SpeechClient.create();
+	}
+	
+	public void startClientStream(ResponseObserverClass responseObserver) {
+
 		// start/restart clientStream
         clientStream =
                 client.streamingRecognizeCallable().splitCall(responseObserver);
+        
+	}
+	
+	public void setRecognitionConfig() {
         recognitionConfig =
                 RecognitionConfig.newBuilder()
                     .setEncoding(encoding)
@@ -30,14 +36,14 @@ public class StreamingRecognition {
                     .setModel(model)
                     .setSampleRateHertz(sampleRateHertz)
                     .build();
+	}
+	
+	public void setStreamingRecognition() {
         streamingRecognitionConfig =
                 StreamingRecognitionConfig.newBuilder()
                 	.setConfig(recognitionConfig)
                 	.setInterimResults(interimResults)
                 	.build();
-        // send config to server
-        request =
-            StreamingRecognizeRequest.newBuilder();
 	}
 	
 	public void sendRequest(StreamingRecognizeRequest request) {
@@ -45,13 +51,13 @@ public class StreamingRecognition {
 	}
 
 	public StreamingRecognizeRequest setAudioContent(byte[] data) {
-		return request
+		return StreamingRecognizeRequest.newBuilder()
 	        .setAudioContent(ByteString.copyFrom(data))
 	        .build();
 	}
 
 	public StreamingRecognizeRequest setStreamingConfig() {
-		return request
+		return StreamingRecognizeRequest.newBuilder()
                 .setStreamingConfig(streamingRecognitionConfig)
                 .build();
 	}

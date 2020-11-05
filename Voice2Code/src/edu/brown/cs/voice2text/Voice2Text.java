@@ -14,6 +14,8 @@ public class Voice2Text implements Runnable{
 	private Microphone microphone;
 	
 	public Voice2Text() throws Exception{
+
+		streamingRecognition = new StreamingRecognition(responseObserver);
         responseObserver = new ResponseObserverClass();
         microphone = new Microphone();
         microphone.checkMicrophone();
@@ -32,14 +34,10 @@ public class Voice2Text implements Runnable{
 
 	@Override
 	public void run() {
-		// StreamingRecognition() can not be share 
-		// a new one is initialized at every start().
-		try {
-			streamingRecognition = new StreamingRecognition(responseObserver);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
+		streamingRecognition.startClientStream(responseObserver);
+		streamingRecognition.setRecognitionConfig();
+		streamingRecognition.setStreamingRecognition();
 		StreamingRecognizeRequest request = streamingRecognition.setStreamingConfig();
 
         streamingRecognition.sendRequest(request);

@@ -28,7 +28,7 @@ public class Voice2Code {
 		
 	    button = new Button(parent, SWT.PUSH);
 	    
-	    ImageData imageData = new ImageData("/home/jeremy/eclipse-workspace/Voice2Code/icons/microphone.png");
+	    ImageData imageData = new ImageData("/Users/rashidhar/Documents/Speech-Based-Code-Editor-Project/Voice2Code/icons/microphone.png");
 	    imageData = imageData.scaledTo(100, 100);
 	    button.setImage(new Image(Display.getCurrent(), imageData));
 	    
