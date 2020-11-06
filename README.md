@@ -19,6 +19,7 @@ git clone https://github.com/somahota/Speech-Based-Code-Editor-Project.git
     4. Click Next. Once the installation is done, Eclipse will ask to restart, please do so.
 4. Make sure you have `GOOGLE_APPLICATION_CREDENTIALS` environment variable set up in the `Run Configurations` under Run in Eclipse. (follow [this](#setting-up-gcloud-key) guide to get GCloud key setup)
 5. To run the plugin, right-click the project (make sure that is `Voice2Code`) and click `Run As` -> `Eclipse Application`.
+4. To view the plugin go to `Window`->`Show View`->`Other`->`Voice 2 Code`-> `Voice 2 Code`.
 6. This will open up a new Eclipse window with the GUI with Press to Speak.
 ![GUI](/images/gui.png)
 7. Click `Create a project` to create a standard project, when the GUI is pressed, speak out to view text being coded inside your project.
@@ -45,4 +46,14 @@ Final: true
 ```
 variable: GOOGLE_APPLICATION_CREDENTIALS
 value: /home/user/Downloads/<my-key>.json
+```
+
+## Troubleshooting
+
+May things can go wrong with Eclipse.
+
+1. If you don't see `Voice 2 Code` in the View menu, make sure you have `.project` file inside Eclipse workspace.
+2. If the microphone does not work, due to getting shared with other applications, launch Eclipse from the terminal using this command on MAC OS.
+```
+/Applications/Eclipse.app/Contents/MacOS/eclipse &!
 ```
