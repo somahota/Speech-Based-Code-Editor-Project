@@ -21,7 +21,8 @@ git clone https://github.com/somahota/Speech-Based-Code-Editor-Project.git
 5. To run the plugin, right-click the project (make sure that is `Voice2Code`) and click `Run As` -> `Eclipse Application`.
 6. This will open up a new Eclipse window with the GUI with Press to Speak.
 ![GUI](/images/gui.png)
-7. Speak into your microphone and you will find results like below. The confidence score is displayed for the final results (Final: true) after the sentence is completed. 
+7. Click `Create a project` to create a standard project, when the GUI is pressed, speak out to view text being coded inside your project.
+8. You will find results like below printed on the console. The confidence score is displayed for the final results (Final: true) after the sentence is completed. 
 ```
 V2T Start
 Mic and CloudStream initialized
