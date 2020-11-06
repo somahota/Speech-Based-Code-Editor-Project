@@ -27,24 +27,10 @@ public class Voice2Code {
 	private boolean started;
 	private Voice2Text v2t;
 	private InsertHandler ih;
-
-	public Image getMicrophoneImage(String path) {
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-		final URL fullPathString = FileLocator.find(bundle, new Path(path), null);
-
-		ImageDescriptor imageDesc = ImageDescriptor.createFromURL(fullPathString);
-
-		Image image = imageDesc.createImage();
-		ImageData imageData = image.getImageData();
-		imageData.scaledTo(100, 100);
-		
-		return new Image(Display.getCurrent(), imageData);
-	}
 	
 	@PostConstruct
 	public void createPartControl(Composite parent) throws Exception {
 		ih = new InsertHandler();
-		
 		
 		System.out.println("Enter in Button postConstruct");
 		v2t = new Voice2Text(ih);
@@ -86,5 +72,18 @@ public class Voice2Code {
 		started = true;
 		button.setBackground(new Color(Display.getCurrent(), 255, 40, 0, 100));
 		button.setText("Press to Stop");
+	}
+	
+	private Image getMicrophoneImage(String path) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		final URL fullPathString = FileLocator.find(bundle, new Path(path), null);
+	
+		ImageDescriptor imageDesc = ImageDescriptor.createFromURL(fullPathString);
+	
+		Image image = imageDesc.createImage();
+		ImageData imageData = image.getImageData();
+		imageData = imageData.scaledTo(100, 100);
+		
+		return new Image(Display.getCurrent(), imageData);
 	}
 }
