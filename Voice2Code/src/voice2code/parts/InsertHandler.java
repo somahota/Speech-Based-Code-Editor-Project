@@ -27,6 +27,7 @@ public class InsertHandler {
 				
 				try {
 					document.replace(offset, 0, text);
+					styledText.setSelection(styledText.getCharCount());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
