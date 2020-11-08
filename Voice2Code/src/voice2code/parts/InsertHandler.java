@@ -44,7 +44,10 @@ public class InsertHandler {
 				}
 				
 				styledText.setCaretOffset(offset + text.length() + 1);
+				
+				//Try while loop
 			}
+			
 		});
 	}
 }
