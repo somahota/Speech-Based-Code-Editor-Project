@@ -2,6 +2,9 @@ package voice2code.parts;
 
 import org.eclipse.ui.*;
 import org.eclipse.ui.texteditor.*;
+
+import edu.brown.cs.voice2text.ResponseObserverClass;
+
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Control;
@@ -24,18 +27,30 @@ public class InsertHandler {
 				Control control = editor.getAdapter(Control.class);
 				StyledText styledText = (StyledText) control;
 				int offset = styledText.getCaretOffset();
-				
+				ResponseObserverClass roc = new ResponseObserverClass();
 				try {
-					document.replace(offset, 0, text);
-					styledText.setSelection(styledText.getCharCount());
+					if("down".equals(roc.tokenize(text)))
+					{
+						document.replace(offset, 0, text.replace("down", ";"));
+						styledText.setSelection(styledText.getCharCount());
+						int currentLine = styledText.getLineAtOffset(styledText.getCaretOffset());
+			            String textAtLine = styledText.getLine(currentLine);
+			            //int spaces = getLeadingSpaces(textAtLine);
+			            styledText.insert("\n");
+			            styledText.setCaretOffset(styledText.getCaretOffset());
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				
 				styledText.setCaretOffset(offset + text.length() + 1);
+				
+				//Try while loop
 			}
+			
 		});
 	}
+}
 	
 //	private void moveCursorToLineNumber(int lineNumber) {
 //		
