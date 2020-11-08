@@ -43,12 +43,12 @@ public class ResponseObserverClass implements ResponseObserver<StreamingRecogniz
 	{
  		StringTokenizer key = new StringTokenizer(token);
  		String command ="";
- 		while(key.hasMoreTokens())
- 		{
-		   command = key.nextToken();
- 		}
-		return command;	
-		}
+ 		   while(key.hasMoreTokens())
+ 		   {
+		      command = key.nextToken();
+ 		   }
+		   return command;	
+	}
 
 
 	@Override
