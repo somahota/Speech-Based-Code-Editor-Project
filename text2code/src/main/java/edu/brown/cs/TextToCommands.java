@@ -25,6 +25,7 @@ public class TextToCommands {
 	 * Initializes key words to look for.
 	 * If detected, these words will be translated into their
 	 * corresponding symbols and added where the user's cursor is.
+	 * (Additional things can be done here)
 	 */
 	private void initializeKeyWords() {
 		keywords.put("space", " ");
@@ -127,7 +128,7 @@ public class TextToCommands {
 	 if not, null
 	*/
 	public List<String> matchCommand(List<String> s) {
-		for (int i = 1; i <= this.maxCommandLength; i++) {
+		for (int i = this.maxCommandLength; i > 1; i--) {
 			List<String> current = new ArrayList<String>();
 			String currString = "";
 			int upperBound = Integer.min(i, s.size());
@@ -157,15 +158,38 @@ public class TextToCommands {
 		}
 	}
 
+	public String listToString(List<String> s) {
+		String res = "";
+		for (int i = 0; i < s.size(); i++) {
+			res += s.get(i);
+			if (i != s.size() - 1) {
+				res += " ";
+			}
+		}
+		return res;
+	}
+
 
 	// Process the current words into commands
 	// Called at end of sentence
 	private void process(List<String> words) {
 
-		for (int i = 0; i < words.size(); i++) {
+		while (words.size() > 0) {
+			// iterate over the words, matching for commands
+			List<String> command = matchCommand(words);
 
-			String command = "placeholder'";
-			switch (command) {
+			// Remove these words
+			for (int i = 0; i < command.size(); i++) {
+				words.remove(0);
+			}
+
+			String current  = (command != null) ? listToString(command) : words.get(0);
+			// Remove first word if no command was found
+			if (command == null) {
+				words.remove(0);
+			}
+
+			switch (current) {
 				case "up" :
 					// Move cursor up one line
 					return;
@@ -191,9 +215,7 @@ public class TextToCommands {
 					// Move cursor one word left
 					return;
 				case "declare var":
-					// Concatenate everything until "end declare var"
-					// probably should just be var, because you would use this
-					// when ever referencing this var not just declaring
+					// Concatenation methods
 					return;
 				default:
 					// Check if it is a keyword
