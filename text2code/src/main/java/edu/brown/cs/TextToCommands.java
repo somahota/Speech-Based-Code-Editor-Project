@@ -13,12 +13,15 @@ public class TextToCommands {
 	// Store key words
 	Map<String, String> keywords = new HashMap<String, String>();
 	Set<String> commands = new HashSet<String>();
+	Map<String, Runnable> commandsToFuncs = new HashMap<String, Runnable>();
+	Set<String> termDeclarators = new HashSet<String>();
 	int maxCommandLength;
 
 
 	public TextToCommands() {
 		initializeKeyWords();
 		initializeCommands();
+		intiliazeDeclarators();
 	}
 
 	/**
@@ -42,7 +45,7 @@ public class TextToCommands {
 		keywords.put("quote", "'");
 		keywords.put("double", "\"");
 		keywords.put("comment", "//");
-		keywords.put("less than ", "<");
+		keywords.put("less than", "<");
 		keywords.put("greater than", ">");
 	}
 
@@ -55,17 +58,19 @@ public class TextToCommands {
 		commands.add("up");
 		commands.add("down");
 		commands.add("next line");
-
-		int maxLength = -1;
-		for (String s : commands) {
-			int size = s.split(" ").length;
-			if (size > maxLength) {
-				maxLength = size;
-			}
-		}
-		this.maxCommandLength = maxLength;
 	}
 
+  /*
+	 Commands to declare terms, can be ended with 'end declare'
+	 ex: "declare var  this is a var end declare"
+
+	*/
+	private void intiliazeDeclarators() {
+
+		termDeclarators.add("declare var");
+		termDeclarators.add("declare normal var");
+		termDeclarators.add("declare caps var");
+	}
 
 	/**
 	 *
@@ -122,26 +127,46 @@ public class TextToCommands {
 		return result;
 	}
 
-  /**
-	 Checks if the beginning of s matches to a command,
-	 if there is a match, returns a list of the strings in this command
-	 if not, null
-	*/
-	public List<String> matchCommand(List<String> s) {
-		for (int i = this.maxCommandLength; i > 1; i--) {
-			List<String> current = new ArrayList<String>();
-			String currString = "";
-			int upperBound = Integer.min(i, s.size());
-			for (int j = 0; j < i; j++) {
-				current.add(s.get(j));
-				currString += s.get(j);
-				if (j != i - 1) {
-					currString += " ";
-				}
+	public String getFirstNAsString(int n, List<String> s) {
+		assert(n <= s.size());
+		String result = "";
+		for (int j = 0; j < n; j++) {
+			result += s.get(j);
+			if (j != n - 1) {
+				result += " ";
 			}
-			System.out.println("||||||||||||" + currString);
+		}
+		return result;
+	}
+
+	public List<String> getFirstN(int n, List<String> s) {
+		assert(n <= s.size());
+		List<String> result = new ArrayList<String>();
+		for (int j = 0; j < n; j++) {
+			result.add(s.get(j));
+		}
+		return result;
+	}
+
+	public int getLargestInSet(Set<String> terms) {
+		int maxLength = -1;
+		for (String s : terms) {
+			int size = s.split(" ").length;
+			if (size > maxLength) {
+				maxLength = size;
+			}
+		}
+		return maxLength;
+	}
+
+  /* Match terms with the beginning of s */
+	public List<String> matchTerm(List<String> s, Set<String> terms) {
+		int largestTermLength = Integer.min(getLargestInSet(terms), s.size());
+		for (int i = largestTermLength; i > 1; i--) {
+			String currString = getFirstNAsString(i, s);
+			List<String> current = getFirstN(i, s);
 			// Check for match
-			if (this.commands.contains(currString)) {
+			if (terms.contains(currString)) {
 				return current;
 			}
 		}
@@ -170,61 +195,163 @@ public class TextToCommands {
 	}
 
 
-	// Process the current words into commands
-	// Called at end of sentence
-	private void process(List<String> words) {
+ public void removeFirstN(int n, List<String> words) {
+	 assert(n <= words.size());
+	 for (int i = 0; i < n; i++) {
+		 words.remove(0);
+	 	}
+ }
 
-		while (words.size() > 0) {
-			// iterate over the words, matching for commands
-			List<String> command = matchCommand(words);
+	public boolean checkForCommand(List<String> words) {
+		// iterate over the words, matching for commands
+		List<String> command = matchTerm(words, commands);
 
-			// Remove these words
-			for (int i = 0; i < command.size(); i++) {
-				words.remove(0);
-			}
-
-			String current  = (command != null) ? listToString(command) : words.get(0);
-			// Remove first word if no command was found
-			if (command == null) {
-				words.remove(0);
-			}
-
-			switch (current) {
+		if (command != null) {
+			String commandString = getFirstNAsString(command.size(), words);
+			removeFirstN(command.size(), words);
+			switch (commandString) {
 				case "up" :
 					// Move cursor up one line
-					return;
+					System.out.println("up");
+					break;
 				case "down":
 					// Move cursor down one line
-					return;
+					System.out.println("down");
+					break;
 				case "end line":
 					// Move cursor to end of line
-					return;
+					System.out.println("end line");
+					break;
+				case "next line" :
+					// Move cursor up one line
+					System.out.println("command: next line");
+					break;
 				case "start line":
 					// Move cursor to start of line
-					return;
+					System.out.println("start line");
+					break;
 				case "end file":
 					// Move Cursor to end of file
-					return;
+					System.out.println("end file");
+					break;
 				case "start file":
 					// Move cursor to start of file
-					return;
+					System.out.println("start file");
+					break;
 				case "right":
 					// Move cursor one word right
-					return;
+					System.out.println("right");
+					break;
 				case "left":
 					// Move cursor one word left
-					return;
+					System.out.println("left");
+					break;
 				case "declare var":
 					// Concatenation methods
-					return;
+					// ex: default var declaration
+					System.out.println("Declaring var");
+					break;
 				default:
-					// Check if it is a keyword
-					if (keywords.containsKey(command)) {
-						// writeOut(keywords.get(command))
-					} else {
-						// Just write out the word as is if nothing after
-						// writeOut(command)
-					}
+					System.out.println("no match");
+					break;
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+
+	public boolean checkForKeyWords(List<String> words) {
+		// iterate over the words, matching for commands
+		List<String> keyword = matchTerm(words, keywords.keySet());
+
+		if (keyword != null) {
+			String keywordString = getFirstNAsString(keyword.size(), words);
+			removeFirstN(keyword.size(), words);
+			// TODO: call a function to write this to screen
+			System.out.println(keywords.get(keywordString));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// get the words that will make up a variable (assumes a declarator has been used)
+	// ex input: this is a var end declare something else
+	//    output: 'this', 'is', 'a', 'var'
+	public List<String> buildVariable(List<String> words) {
+		List<String> result = new ArrayList<String>();
+		int size = words.size();
+		if (words.size() < 2) {
+			throw new InvalidCommandException("A declaration was not followed by 'end declare'");
+		}
+		while(words.size() >= 2) {
+			if (words.get(0).equals("end") && words.get(1).equals("declare")) {
+				removeFirstN(2, words);
+				return result;
+			} else {
+				result.add(words.get(0));
+				removeFirstN(1, words);
+			}
+		}
+		throw new InvalidCommandException("A declaration was not followed by 'end declare'");
+	}
+
+	public boolean checkForDeclarations(List<String> words) {
+		List<String> declarator = matchTerm(words, termDeclarators);
+
+		if (declarator != null) {
+
+			String declaratorString = getFirstNAsString(declarator.size(), words);
+			removeFirstN(declarator.size(), words);
+			List<String> var = buildVariable(words);
+			switch (declaratorString) {
+				case "declare var":
+					System.out.println(getVariableString(var));
+					break;
+				case "declare normal var":
+					System.out.println(getNormalCase(var));
+				  break;
+				case "declare caps var":
+				System.out.println(getAllCapsString(var));
+				  break;
+				default:
+					break;
+			}
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void printList(List<String> words) {
+		for (int i = 0 ; i < words.size(); i ++) {
+			System.out.print(words.get(i) + " ");
+		}
+		System.out.println();
+	}
+
+	// Process the current words into commands
+	// Called at end of sentence
+	public void process(List<String> words) {
+		System.out.println("Processing: ");
+
+		while (words.size() > 0) {
+			//printList(words);
+			if (checkForCommand(words)) {
+				continue;
+			} else if (checkForKeyWords(words)) {
+				continue;
+			}  else if(checkForDeclarations(words)) {
+				continue;
+			}
+			else {
+				// regular word
+				System.out.println(words.get(0));
+				removeFirstN(1, words);
 			}
 		}
 	}
