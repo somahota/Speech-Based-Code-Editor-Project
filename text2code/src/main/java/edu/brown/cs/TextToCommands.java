@@ -50,6 +50,7 @@ public class TextToCommands {
 		keywords.put("integer", "int");
 		keywords.put("string", "String");
 		keywords.put("print", "System.out.println(");
+		keywords.put("main function", "public static void main(String[] args) {");
 		
 	}
 
