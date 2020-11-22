@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.brown.cs.plugin.editor.Handler;
+
 public class TextToCommands {
 
 
@@ -16,12 +18,16 @@ public class TextToCommands {
 	Map<String, Runnable> commandsToFuncs = new HashMap<String, Runnable>();
 	Set<String> termDeclarators = new HashSet<String>();
 	int maxCommandLength;
+	
+	Handler editorHandler;
 
 
 	public TextToCommands() {
 		initializeKeyWords();
 		initializeCommands();
 		intiliazeDeclarators();
+		
+		editorHandler = new Handler();
 	}
 
 	/**
@@ -221,39 +227,39 @@ public class TextToCommands {
 			switch (commandString) {
 				case "up" :
 					// Move cursor up one line
-					System.out.println("up");
+					editorHandler.moveCursorUp();
 					break;
 				case "down":
 					// Move cursor down one line
-					System.out.println("down");
+					editorHandler.moveCursorDown();
 					break;
 				case "end line":
 					// Move cursor to end of line
-					System.out.println("end line");
+					editorHandler.moveCursorToEndOfLine();
 					break;
 				case "next line" :
 					// Move cursor up one line
-					System.out.println("command: next line");
+					
 					break;
 				case "start line":
 					// Move cursor to start of line
-					System.out.println("start line");
+					editorHandler.moveCursorToStartOfLine();
 					break;
 				case "end file":
 					// Move Cursor to end of file
-					System.out.println("end file");
+					editorHandler.moveCursorToEndOfFile();
 					break;
 				case "start file":
 					// Move cursor to start of file
-					System.out.println("start file");
+					editorHandler.moveCursorToBeginningOfFile();
 					break;
 				case "right":
 					// Move cursor one word right
-					System.out.println("right");
+					editorHandler.moveCursorRight();
 					break;
 				case "left":
 					// Move cursor one word left
-					System.out.println("left");
+					editorHandler.moveCursorLeft();
 					break;
 				case "declare var":
 					// Concatenation methods

@@ -39,7 +39,7 @@ public class ResponseObserverClass implements ResponseObserver<StreamingRecogniz
 			System.out.println("Tokenize:" + token );
 		}
 		List<String> wordList = new ArrayList<String>(Arrays.asList(transcript.split(" ")));
-		textToCommandHandler.simpleProcess(wordList);
+		textToCommandHandler.process(wordList);
 	}
 	
  	public String tokenize(String token)
