@@ -47,6 +47,10 @@ public class TextToCommands {
 		keywords.put("comment", "//");
 		keywords.put("less than", "<");
 		keywords.put("greater than", ">");
+		keywords.put("integer", "int");
+		keywords.put("string", "String");
+		keywords.put("print", "System.out.println(");
+		
 	}
 
   /**
@@ -58,6 +62,10 @@ public class TextToCommands {
 		commands.add("up");
 		commands.add("down");
 		commands.add("next line");
+		command.add("left");
+		command.add("right");
+		command.add("forward word");
+		command.add("backward word");
 	}
 
   /*
