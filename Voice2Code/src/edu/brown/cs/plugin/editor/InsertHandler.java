@@ -1,4 +1,4 @@
-package voice2code.parts;
+package edu.brown.cs.plugin.editor;
 
 import org.eclipse.ui.*;
 import org.eclipse.ui.texteditor.*;
@@ -64,4 +64,4 @@ public class InsertHandler {
 //		}
 //		
 //	}
-}
+//}
